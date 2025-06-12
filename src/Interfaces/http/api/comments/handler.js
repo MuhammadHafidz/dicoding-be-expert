@@ -26,7 +26,7 @@ class CommentsHandler {
     return response;
   }
 
-  async deleteCommentHandler(request, h) {
+  async deleteCommentHandler(request, _h) {
     const { id: userId } = request.auth.credentials;
     const { threadId, commentId } = request.params;
 

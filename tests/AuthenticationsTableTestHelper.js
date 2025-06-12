@@ -1,6 +1,5 @@
 /* istanbul ignore file */
 const pool = require('../src/Infrastructures/database/postgres/pool');
-const JwtTokenManager = require('../src/Infrastructures/security/JwtTokenManager');
 
 const AuthenticationsTableTestHelper = {
   async addToken(token) {

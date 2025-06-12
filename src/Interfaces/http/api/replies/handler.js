@@ -31,7 +31,7 @@ class RepliesHandler {
     return response;
   }
 
-  async deleteReplyHandler(request, h) {
+  async deleteReplyHandler(request, _h) {
     const { id: userId } = request.auth.credentials;
     const { threadId, commentId, replyId } = request.params;
 
