@@ -20,6 +20,7 @@ describe('Comment entity', () => {
       created_at: {},
       content: [],
       replies: 'not-an-array',
+      likeCount: 'not-a-number'
     };
 
     expect(() => new Comment(payload)).toThrow('COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
@@ -39,6 +40,7 @@ describe('Comment entity', () => {
       created_at: '2021-08-08T00:00:00.000Z',
       content: 'komentar valid',
       replies: [reply1],
+      likeCount: 10
     };
 
     const comment = new Comment(payload);
@@ -47,6 +49,7 @@ describe('Comment entity', () => {
     expect(comment.username).toEqual(payload.username);
     expect(comment.date).toEqual(payload.created_at);
     expect(comment.content).toEqual(payload.content);
+    expect(comment.likeCount).toEqual(payload.likeCount);
     expect(comment.replies).toHaveLength(1);
     expect(comment.replies[0]).toBeInstanceOf(Reply);
   });

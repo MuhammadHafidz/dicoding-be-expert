@@ -27,6 +27,7 @@ describe('GetThreadUseCase', () => {
         username: 'johndoe',
         created_at: new Date('2022-01-01T00:00:00.000Z'),
         content: 'komentar abc',
+        like_count: 0,
         deleted_at: null,
       }),
       new CommentDTO({
@@ -34,6 +35,7 @@ describe('GetThreadUseCase', () => {
         username: 'johndoe',
         created_at: new Date('2022-01-02T00:00:00.000Z'),
         content: 'komentar abc',
+        like_count: 1,
         deleted_at: new Date('2022-01-02T00:00:00.000Z'),
       }),
     ];
@@ -99,10 +101,12 @@ describe('GetThreadUseCase', () => {
     expect(comment1.username).toBe('johndoe');
     expect(comment1.date).toBe('2022-01-01T00:00:00.000Z');
     expect(comment1.content).toBe('komentar abc');
+    expect(comment1.likeCount).toBe(0);
     expect(comment1.replies).toBeInstanceOf(Array);
     expect(comment1.replies).toHaveLength(2);
     expect(comment2.id).toBe('comment-1234');
     expect(comment2.content).toBe('**komentar telah dihapus**');
+    expect(comment2.likeCount).toBe(1);
     expect(comment2.replies).toBeInstanceOf(Array);
     expect(comment2.replies).toHaveLength(0);
   

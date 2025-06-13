@@ -58,11 +58,13 @@ describe('CommentRepositoryPostgres', () => {
       expect(comments[0]).toHaveProperty('username');
       expect(comments[0]).toHaveProperty('date');
       expect(comments[0]).toHaveProperty('isDeleted');
+      expect(comments[0]).toHaveProperty('likeCount');
       expect(comments[1]).toHaveProperty('id');
       expect(comments[1]).toHaveProperty('content');
       expect(comments[1]).toHaveProperty('username');
       expect(comments[1]).toHaveProperty('date');
       expect(comments[1]).toHaveProperty('isDeleted');
+      expect(comments[1]).toHaveProperty('likeCount');
     });
   });
 

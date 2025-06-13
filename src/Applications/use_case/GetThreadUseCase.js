@@ -13,6 +13,7 @@ class GetThreadUseCase {
     const thread = await this._threadRepository.findThreadById(threadId);
     
     const commentsDto = await this._commentRepository.getCommentsByThreadId(threadId);
+    
     const commentIds = commentsDto.map(comment => comment.id);
 
     const repliesDto = await this._replyRepository.getRepliesByCommentIds(commentIds);
@@ -39,6 +40,7 @@ class GetThreadUseCase {
       created_at: comment.date.toISOString(),
       content: comment.isDeleted ? '**komentar telah dihapus**' : comment.content,
       replies: repliesGrouped[comment.id] || [],
+      likeCount: comment.likeCount,
     }));
 
     thread.setComments(formattedComments);

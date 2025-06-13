@@ -2,13 +2,22 @@
 const Jwt = require('@hapi/jwt');
 const pool = require('../src/Infrastructures/database/postgres/pool');
 const JwtTokenManager = require('../src/Infrastructures/security/JwtTokenManager');
+const bcrypt = require('bcrypt'); // Tambahkan ini jika belum
 
 const UsersTableTestHelper = {
   async addUser({
-    id = 'user-123', username = `user-${Math.random()}`, password = 'secret', fullname = 'Dicoding Indonesia',
+    id = 'user-123',
+    username = `user-${id}`,
+    password = 'secret',
+    fullname = 'Dicoding Indonesia',
   }) {
+
     const query = {
-      text: 'INSERT INTO users VALUES($1, $2, $3, $4)',
+      text: `
+        INSERT INTO users (id, username, password, fullname)
+        VALUES($1, $2, $3, $4)
+        ON CONFLICT (id) DO NOTHING
+      `,
       values: [id, username, password, fullname],
     };
 
@@ -27,21 +36,22 @@ const UsersTableTestHelper = {
 
   async getAccessToken({
     id = 'user-123',
-    username = `user-${Math.random()}`,
+    username,
     password = 'secret',
   } = {}) {
-    // Ensure user exists
-    await this.addUser({ id, username, password });
+    // Buat username default berdasarkan ID jika tidak disediakan
+    const finalUsername = username || `user-${id}`;
 
-    // Generate token using JwtTokenManager
+    // Tambahkan user jika belum ada
+    await this.addUser({ id, username: finalUsername, password });
+
+    // Generate token
     const jwtTokenManager = new JwtTokenManager(Jwt.token);
-    const accessToken = await jwtTokenManager.createAccessToken({ id, username });
-
-    return accessToken;
+    return jwtTokenManager.createAccessToken({ id, username: finalUsername });
   },
 
   async cleanTable() {
-    await pool.query('DELETE FROM users WHERE 1=1');
+    await pool.query('DELETE FROM users');
   },
 };
 
