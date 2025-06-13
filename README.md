@@ -1,6 +1,6 @@
 # dicoding-be-expert
 
-[![CI](https://github.com/MuhammadHafidz/dicoding-be-expert/actions/workflows/ci.yml/badge.svg)](https://github.com/MuhammadHafidz/dicoding-be-expert/actions/workflows/ci.yml)
+[![CI](https://github.com/MuhammadHafidz/dicoding-be-expert/actions/workflows/ci.yml/badge.svg)](https://github.com/MuhammadHafidz/dicoding-be-expert/actions/workflows/ci.yml) [![CI](https://github.com/MuhammadHafidz/dicoding-be-expert/actions/workflows/cd.yml/badge.svg)](https://github.com/MuhammadHafidz/dicoding-be-expert/actions/workflows/cd.yml)
 
 📦 Submission proyek untuk kelas **Menjadi Back-End Developer Expert dengan JavaScript** dari [Dicoding](https://www.dicoding.com/).
 
@@ -135,5 +135,6 @@ location ~ ^/threads {
 }
 ```
 
+>**NOTE**: Bijaklah dalam menggunakan Repository ini
 
 
