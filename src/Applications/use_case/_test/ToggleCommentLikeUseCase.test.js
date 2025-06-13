@@ -14,6 +14,10 @@ describe('ToggleCommentLikeUseCase', () => {
       commentId: 'comment-123',
     })
 
+    const commentLike = new CommentLike(
+      useCasePayload.commentId, userId
+    )
+
     const mockCommentRepository = new CommentRepository();
     mockCommentRepository.verifyCommentExist = jest.fn().mockResolvedValue();
 
@@ -26,14 +30,15 @@ describe('ToggleCommentLikeUseCase', () => {
       commentRepository: mockCommentRepository,
       commentLikeRepository: mockCommentLikeRepository,
     });
+    
 
     // Act
     await toggleCommentLikeUseCase.execute(useCasePayload, userId);
 
     // Assert
     expect(mockCommentRepository.verifyCommentExist).toHaveBeenCalledWith(useCasePayload.threadId, useCasePayload.commentId);
-    expect(mockCommentLikeRepository.existsByCommentLike).toHaveBeenCalledWith(new CommentLike(useCasePayload.commentId, userId));
-    expect(mockCommentLikeRepository.add).toHaveBeenCalledWith(new CommentLike(useCasePayload.commentId, userId));
+    expect(mockCommentLikeRepository.existsByCommentLike).toHaveBeenCalledWith(commentLike);
+    expect(mockCommentLikeRepository.add).toHaveBeenCalledWith(commentLike);
     expect(mockCommentLikeRepository.delete).not.toHaveBeenCalled();
   });
 
@@ -46,6 +51,10 @@ describe('ToggleCommentLikeUseCase', () => {
       threadId: 'thread-123',
       commentId: 'comment-123',
     })
+
+    const commentLike = new CommentLike(
+      useCasePayload.commentId, userId
+    )
     
     const mockCommentRepository = new CommentRepository();
     mockCommentRepository.verifyCommentExist = jest.fn().mockResolvedValue();
@@ -53,6 +62,7 @@ describe('ToggleCommentLikeUseCase', () => {
     const mockCommentLikeRepository = new CommentLikeRepository();
     mockCommentLikeRepository.existsByCommentLike = jest.fn().mockResolvedValue(true);
     mockCommentLikeRepository.delete = jest.fn().mockResolvedValue();
+    mockCommentLikeRepository.add = jest.fn();
 
     const toggleCommentLikeUseCase = new ToggleCommentLikeUseCase({
       commentRepository: mockCommentRepository,
@@ -64,8 +74,8 @@ describe('ToggleCommentLikeUseCase', () => {
 
     // Assert
     expect(mockCommentRepository.verifyCommentExist).toHaveBeenCalledWith(useCasePayload.threadId, useCasePayload.commentId);
-    expect(mockCommentLikeRepository.existsByCommentLike).toHaveBeenCalledWith(new CommentLike(useCasePayload.commentId, userId));
-    expect(mockCommentLikeRepository.delete).toHaveBeenCalledWith(new CommentLike(useCasePayload.commentId, userId));
+    expect(mockCommentLikeRepository.existsByCommentLike).toHaveBeenCalledWith(commentLike);
+    expect(mockCommentLikeRepository.delete).toHaveBeenCalledWith(commentLike);
     expect(mockCommentLikeRepository.add).not.toHaveBeenCalled();
   });
 });

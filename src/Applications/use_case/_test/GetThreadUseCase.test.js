@@ -27,7 +27,7 @@ describe('GetThreadUseCase', () => {
         username: 'johndoe',
         created_at: new Date('2022-01-01T00:00:00.000Z'),
         content: 'komentar abc',
-        likeCount: 0,
+        like_count: 0,
         deleted_at: null,
       }),
       new CommentDTO({
@@ -35,7 +35,7 @@ describe('GetThreadUseCase', () => {
         username: 'johndoe',
         created_at: new Date('2022-01-02T00:00:00.000Z'),
         content: 'komentar abc',
-        likeCount: 1,
+        like_count: 1,
         deleted_at: new Date('2022-01-02T00:00:00.000Z'),
       }),
     ];

@@ -12,15 +12,23 @@ describe('CommentLikeRepositoryPostgres', () => {
   const threadId = 'thread-123';
   const commentId = 'comment-123';
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     await UsersTableTestHelper.addUser({ id: userId });
     await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
     await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
   });
 
   afterAll(async () => {
+    await UsersTableTestHelper.cleanTable();
+    await ThreadsTableTestHelper.cleanTable();
+    await CommentsTableTestHelper.cleanTable();
     await pool.end();
   });
+
+  afterEach(async() => {
+    await CommentLikesTableTestHelper.cleanTable();
+  });
+  
 
   describe('Add Function', () => {
     it('add like correctly', async () => {
@@ -35,7 +43,7 @@ describe('CommentLikeRepositoryPostgres', () => {
       await repo.add(addLike);
     
       // Assert
-      const commentLikes = await CommentLikesTableTestHelper.findReplyById('comment_like-xyz');
+      const commentLikes = await CommentLikesTableTestHelper.findLikeById('comment_like-xyz');
       expect(commentLikes).toHaveLength(1);
     
       const savedCommentLike = commentLikes[0];
@@ -47,7 +55,7 @@ describe('CommentLikeRepositoryPostgres', () => {
     it('should throw InvariantError when like already exists', async () => {
 
       // Arrange
-      const repository = new CommentLikeRepositoryPostgres(pool);
+      const repository = new CommentLikeRepositoryPostgres(pool, () => 'xyz');
       await repository.add({ commentId, userId });
 
       // Act and Assert
@@ -59,14 +67,14 @@ describe('CommentLikeRepositoryPostgres', () => {
   describe('Delete Function', () => {
     it('should delete like from database', async () => {
       // Arrange
-      const repository = new CommentLikeRepositoryPostgres(pool);
-      await CommentLikesTableTestHelper.addCommentLike({ commentId, userId });
+      const repository = new CommentLikeRepositoryPostgres(pool, () => 'xyz');
+      await CommentLikesTableTestHelper.addLike({ commentId, userId });
 
       // Act
       await repository.delete({ commentId, userId });
 
       // Assert
-      const result = await CommentLikesTableTestHelper.findCommentLike(commentId, userId);
+      const result = await CommentLikesTableTestHelper.findLikeByCommentIdUserId(commentId, userId);
       expect(result).toHaveLength(0);
     });
 
@@ -82,7 +90,7 @@ describe('CommentLikeRepositoryPostgres', () => {
   describe('existsByCommentLike function', () => {
     it('should return true when like exists', async () => {
       const repository = new CommentLikeRepositoryPostgres(pool);
-      await CommentLikesTableTestHelper.addCommentLike({ commentId, userId });
+      await CommentLikesTableTestHelper.addLike({ commentId, userId });
 
       const result = await repository.existsByCommentLike({ commentId, userId });
       expect(result).toBe(true);

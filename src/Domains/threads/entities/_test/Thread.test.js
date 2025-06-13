@@ -80,6 +80,7 @@ describe('Thread entity', () => {
       created_at: '2021-08-08T07:19:09.775Z',
       content: 'komentar valid',
       replies: [],
+      likeCount: 0
     })
 
 

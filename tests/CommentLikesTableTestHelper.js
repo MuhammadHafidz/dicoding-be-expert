@@ -2,10 +2,10 @@
 const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const CommentLikesTableTestHelper = {
-  async addLike({ commentId = 'comment-123', userId = 'user-123' }) {
+  async addLike({ id = 'comment_like-123',commentId = 'comment-123', userId = 'user-123' }) {
     const query = {
-      text: 'INSERT INTO comment_likes(comment_id, user_id) VALUES($1, $2)',
-      values: [commentId, userId],
+      text: 'INSERT INTO comment_likes(id, comment_id, user_id) VALUES($1, $2, $3)',
+      values: [id, commentId, userId],
     };
 
     await pool.query(query);

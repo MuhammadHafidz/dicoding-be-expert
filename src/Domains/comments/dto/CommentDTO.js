@@ -4,7 +4,7 @@ class CommentDTO {
     this.username = row.username;
     this.date = row.created_at;
     this.content = row.content;
-    this.likeCount = row.like_count;
+    this.likeCount = parseInt(row.like_count);
     this.isDeleted = row.deleted_at !== null;
   }
 }
